@@ -15,13 +15,14 @@ public class TodoListDatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE todolist (text TEXT, updated INTEGER, completed INTEGER);");
+        db.execSQL("CREATE TABLE todolist (text TEXT, completed INTEGER, updated_on INTEGER, added_on INTEGER);");
         
         // Create a starter todo list
         for(int i = 0; i < 5; i++) {
             ContentValues cv = new ContentValues();
-            cv.put("text", "Item " + i);
-            cv.put("updated", new Date().getTime());
+            cv.put("text", "Item " + (i + 1));
+            cv.put("added_on", new Date().getTime() + i);
+            cv.put("updated_on", new Date().getTime() + i);
             cv.put("completed", i < 3);
             db.insert("todolist", null, cv);
         }

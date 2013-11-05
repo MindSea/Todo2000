@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.mindsea.simpletodo.model.TodoItem;
@@ -20,7 +19,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
     
     private SQLiteDatabase database;
     private List<TodoItem> todoLists;
-    private ArrayAdapter<TodoItem> listAdapter;
+    private TodoArrayAdapter listAdapter;
     private ListView todoListView;
     
     @Override
@@ -31,7 +30,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         todoListView = (ListView)findViewById(R.id.list);
         
         database = DatabaseManager.getSharedManager().getDatabase().getWritableDatabase();
-        listAdapter = new ArrayAdapter<TodoItem>(this, android.R.layout.simple_list_item_1);
+        listAdapter = new TodoArrayAdapter(this);
         todoListView.setAdapter(listAdapter);
         todoListView.setOnItemClickListener(this);
     }
@@ -59,7 +58,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
     }
     
     private void updateTodoLists() {
-        final Cursor todoListCursor = database.query("todolist", new String[] {"ROWID", "text", "updated", "completed"}, null, null, null, null, "updated DESC");
+        final Cursor todoListCursor = database.query("todolist", new String[] {"ROWID", "text", "updated_on", "added_on", "completed"}, null, null, null, null, null);
         
         todoLists = TodoItem.load(todoListCursor);
         
@@ -67,6 +66,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
         
         listAdapter.clear();
         listAdapter.addAll(todoLists);
+        
+        listAdapter.refresh();
     }
     
     //
@@ -76,9 +77,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (parent.equals(todoListView)) {
-            final TodoItem selectedTodoList = listAdapter.getItem(position);
+            final TodoItem selectedTodo = listAdapter.getItem(position);
             
-            selectedTodoList.getRowId();
+            selectedTodo.setCompleted(!selectedTodo.isCompleted());
+            
+            selectedTodo.commit(database);
+            
+            listAdapter.refresh();
         }
     }
 }
