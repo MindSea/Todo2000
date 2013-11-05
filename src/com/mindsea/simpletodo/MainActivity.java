@@ -20,7 +20,7 @@ import android.widget.ListView;
 import com.mindsea.simpletodo.model.TodoItem;
 import com.mindsea.simpletodo.util.DatabaseManager;
 
-public class MainActivity extends Activity implements OnItemClickListener {
+public class MainActivity extends Activity {
     
     private SQLiteDatabase database;
     private List<TodoItem> todoLists;
@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         database = DatabaseManager.getSharedManager().getDatabase().getWritableDatabase();
         listAdapter = new TodoArrayAdapter(this);
         todoListView.setAdapter(listAdapter);
-        todoListView.setOnItemClickListener(this);
+        todoListView.setOnItemClickListener(todoListViewItemClickListener);
     }
 
     @Override
@@ -79,18 +79,20 @@ public class MainActivity extends Activity implements OnItemClickListener {
     // OnItemClickListener
     //
     
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (parent.equals(todoListView)) {
-            final TodoItem selectedTodo = listAdapter.getItem(position);
-            
-            selectedTodo.setCompleted(!selectedTodo.isCompleted());
-            
-            selectedTodo.commit(database);
-            
-            listAdapter.refresh();
+    private OnItemClickListener todoListViewItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (parent.equals(todoListView)) {
+                final TodoItem selectedTodo = listAdapter.getItem(position);
+                
+                selectedTodo.setCompleted(!selectedTodo.isCompleted());
+                
+                selectedTodo.commit(database);
+                
+                listAdapter.refresh();
+            }
         }
-    }
+    };
     
     //
     // Menu item listener
