@@ -36,13 +36,21 @@ public class TodoItem {
     private Date added;
     private boolean completed;
     
-    public TodoItem(Long rowId, String text, Date updated, Date added, boolean completed) {
+    private TodoItem(Long rowId, String text, Date updated, Date added, boolean completed) {
         super();
         this.rowId = rowId;
         this.text = text;
         this.updated = updated;
         this.added = added;
         this.completed = completed;
+    }
+
+    public TodoItem(String text) {
+        super();
+        this.updated = new Date();
+        this.added = new Date();
+        this.completed = false;
+        this.text = text;
     }
 
     public String getText() {

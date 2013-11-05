@@ -3,13 +3,18 @@ package com.mindsea.simpletodo;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.mindsea.simpletodo.model.TodoItem;
@@ -84,6 +89,41 @@ public class MainActivity extends Activity implements OnItemClickListener {
             selectedTodo.commit(database);
             
             listAdapter.refresh();
+        }
+    }
+    
+    //
+    // Menu item listener
+    //
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.add) {
+            AlertDialog.Builder addDialogBuilder = new AlertDialog.Builder(this);
+            
+            final View addDialogView = getLayoutInflater().inflate(R.layout.add_dialog, null);
+            
+            final EditText editText = (EditText) addDialogView.findViewById(R.id.text);
+            
+            addDialogBuilder.setView(addDialogView);
+            addDialogBuilder.setCancelable(true);
+            addDialogBuilder.setTitle("Add todo");
+            
+            addDialogBuilder.setPositiveButton("Add", new OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    final String text = editText.getText().toString();
+                    TodoItem newItem = new TodoItem(text);
+                    newItem.commit(database);
+                    
+                    updateTodoLists();
+                }
+            });
+            
+            addDialogBuilder.show();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 }
