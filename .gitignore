@@ -1,0 +1,4 @@
+src/com/mindsea/pocketbooth/GitVersion.java
+bin
+*~
+gen
