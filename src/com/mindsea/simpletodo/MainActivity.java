@@ -102,12 +102,10 @@ public class MainActivity extends Activity {
             
             final View addDialogView = getLayoutInflater().inflate(R.layout.add_dialog, null);
             
-            final EditText editText = (EditText) addDialogView.findViewById(R.id.text);
-            
             addDialogBuilder.setView(addDialogView);
             addDialogBuilder.setCancelable(true);
             addDialogBuilder.setTitle("Add todo");
-            
+
             addDialogBuilder.setPositiveButton("Add", new OnClickListener() {
                 /**
                  * Create a new TodoItem and add it to the database.
@@ -116,6 +114,8 @@ public class MainActivity extends Activity {
                  */
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    final EditText editText = (EditText) addDialogView.findViewById(R.id.text);
+                    
                     final String text = editText.getText().toString();
                     TodoItem newItem = new TodoItem(text);
                     newItem.commit(database);

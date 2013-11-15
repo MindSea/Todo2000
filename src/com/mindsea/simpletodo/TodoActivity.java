@@ -102,8 +102,8 @@ public class TodoActivity extends Activity {
         
         todoNameView.setText(selectedTodo.getText());
         completedView.setChecked(selectedTodo.isCompleted());
-        addedDateView.setText(dateFormat.format(selectedTodo.getAdded()));
-        updatedDateView.setText(dateFormat.format(selectedTodo.getUpdated()));
+        addedDateView.setText("Added: " + dateFormat.format(selectedTodo.getAdded()));
+        updatedDateView.setText("Last updated: " + dateFormat.format(selectedTodo.getUpdated()));
     }
     
     //
@@ -139,5 +139,5 @@ public class TodoActivity extends Activity {
             selectedTodo.setText(s.toString());
             selectedTodo.commit(database);
         }
-    };;
+    };
 }

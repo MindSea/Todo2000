@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.mindsea.simpletodo.model.TodoItem;
 
 /**
- * Adapter is used to provide views for any widget that can display multiple
+ * An Adapter is used to provide views for any widget that can display multiple
  * views. Most commonly, this includes ListViews, ViewPagers, and Spinners (eg.
  * selection boxes).
  * 
@@ -61,6 +61,7 @@ public class TodoArrayAdapter extends ArrayAdapter<TodoItem> {
         // aspect of the layout that can change between rows, because the layout
         // might be configured for any possible state. In other words, we can't
         // rely on the default state of view elements from the layout.
+        
         final TodoItem todoItem = getItem(position);
 
         final TextView textView = (TextView) convertView.findViewById(R.id.text);
@@ -74,6 +75,8 @@ public class TodoArrayAdapter extends ArrayAdapter<TodoItem> {
     }
     
     /**
+     * Update the list for new content.
+     * 
      * If our list contents changed, we'll re-sort the list to ensure we're
      * displaying the content in a presentable order, and then notify the
      * ListView that our data set changed so it can fetch new views for the new

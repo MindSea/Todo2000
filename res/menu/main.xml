@@ -1,4 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/add" android:title="@string/add_todo" android:showAsAction="ifRoom"></item>
+
+    <item
+        android:id="@+id/add"
+        android:showAsAction="ifRoom"
+        android:title="@string/add_todo">
+    </item>
 
 </menu>
