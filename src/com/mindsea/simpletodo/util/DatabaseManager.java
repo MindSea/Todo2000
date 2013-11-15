@@ -2,6 +2,10 @@ package com.mindsea.simpletodo.util;
 
 import com.mindsea.simpletodo.TodoApplication;
 
+/**
+ * This class just manages the TodoListDatabase and makes sure only one instance
+ * of it ever gets created.
+ */
 public class DatabaseManager {
     private static final DatabaseManager INSTANCE = new DatabaseManager();
     

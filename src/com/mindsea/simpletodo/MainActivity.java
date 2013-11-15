@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
@@ -44,31 +43,27 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
+        
+        // We update the list every time we come onscreen in case
+        // anything was changed (eg. by another activity or dialog).
         updateTodoLists();
     }
     
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        database = null;
-        todoLists = null;
-        todoListView = null;
-        listAdapter = null;
-    }
-    
+    /**
+     * Inflate the activity's options menu; this adds items to the action bar if
+     * it is present.
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
     
+    /**
+     * Reload the todo lists from the database and display them in the list.
+     */
     private void updateTodoLists() {
-        final Cursor todoListCursor = database.query("todolist", new String[] {"ROWID", "text", "updated_on", "added_on", "completed"}, null, null, null, null, null);
-        
-        todoLists = TodoItem.load(todoListCursor);
-        
-        todoListCursor.close();
+        todoLists = TodoItem.loadTodoItems(database);
         
         listAdapter.clear();
         listAdapter.addAll(todoLists);
@@ -77,9 +72,13 @@ public class MainActivity extends Activity {
     }
     
     //
-    // OnItemClickListener
+    // Listeners
     //
     
+    /**
+     * Item click listener that starts an instance TodoActivity which shows
+     * details for the selected TodoItem.
+     */
     private OnItemClickListener todoListViewItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -90,13 +89,16 @@ public class MainActivity extends Activity {
         }
     };
     
-    //
-    // Menu item listener
-    //
-    
+    /**
+     * Respond to menu item selections.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add) {
+            
+            // We'll build a dialog with an EditText widget so the user can
+            // create a new todo.
+            
             AlertDialog.Builder addDialogBuilder = new AlertDialog.Builder(this);
             
             final View addDialogView = getLayoutInflater().inflate(R.layout.add_dialog, null);
@@ -108,6 +110,11 @@ public class MainActivity extends Activity {
             addDialogBuilder.setTitle("Add todo");
             
             addDialogBuilder.setPositiveButton("Add", new OnClickListener() {
+                /**
+                 * Create a new TodoItem and add it to the database.
+                 * 
+                 * Called if the user taps the 'Add' button in the dialog.
+                 */
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     final String text = editText.getText().toString();

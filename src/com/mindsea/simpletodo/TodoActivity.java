@@ -26,8 +26,14 @@ import com.mindsea.simpletodo.util.DatabaseManager;
 public class TodoActivity extends Activity {
     
     public static final String INTENT_ARG_TODO_ROWID = TodoActivity.class.getName() + ".INTENT_ARG_TODO_ROWID";
-    private SQLiteDatabase database;
     
+    /**
+     * Construct an Intent to launch this activity for a specific todo item.
+     * 
+     * @param c Context for the newly-created Intent.
+     * @param todoRowId Database ROWID for the todo list item that we will be editing.
+     * @return An Intent that can be used to launch TodoActivity to edit the specified item.
+     */
     public static Intent newStartIntent(final Context c, final long todoRowId) {
         final Intent startIntent = new Intent(c, TodoActivity.class);
         startIntent.putExtra(INTENT_ARG_TODO_ROWID, todoRowId);
@@ -37,7 +43,13 @@ public class TodoActivity extends Activity {
     //
     
     private TodoItem selectedTodo;
+    private SQLiteDatabase database;
 
+    /**
+     * Get the row ID parameter from the Intent used to start this activity.
+     * 
+     * @return The row ID of the todo item that this activity is viewing.
+     */
     private long getRowId() {
         return getIntent().getLongExtra(INTENT_ARG_TODO_ROWID, -1);
     }
@@ -50,7 +62,7 @@ public class TodoActivity extends Activity {
         // Load todo from database
         database = DatabaseManager.getSharedManager().getDatabase().getWritableDatabase();
         final Cursor todoListCursor = database.query("todolist", new String[] {"ROWID", "text", "updated_on", "added_on", "completed"}, "ROWID = ?", new String[] { Long.toString(getRowId()) }, null, null, null);
-        selectedTodo = TodoItem.load(todoListCursor).get(0);
+        selectedTodo = TodoItem.loadFromCursor(todoListCursor).get(0);
         
         // Set listeners
         final CheckBox completedView = (CheckBox)findViewById(R.id.completedCheckBox);
@@ -98,6 +110,9 @@ public class TodoActivity extends Activity {
     // Listeners
     //
     
+    /**
+     * Update the todo item when the "completed" checkbox is changed.
+     */
     private final OnCheckedChangeListener completedViewCheckedChangeListener = new OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -107,6 +122,9 @@ public class TodoActivity extends Activity {
         }
     };
     
+    /**
+     * Update the todo item when the text changes.
+     */
     private TextWatcher todoNameTextWatcher = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {

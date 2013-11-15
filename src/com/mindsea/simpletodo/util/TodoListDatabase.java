@@ -12,7 +12,16 @@ public class TodoListDatabase extends SQLiteOpenHelper {
     TodoListDatabase(Context context) {
         super(context, "todolists.db", null, 1);
     }
-
+    
+    /**
+     * Create a todolist database from scratch.
+     * 
+     * We have one table, todolist, which we use to store a number of todo
+     * items.
+     * 
+     * There are helpers on TodoItem to load TodoItem instances from the
+     * database easily: TodoItem.loadTodoItems, TodoItem.loadTodoItemById
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE todolist (text TEXT, completed INTEGER, updated_on INTEGER, added_on INTEGER);");
