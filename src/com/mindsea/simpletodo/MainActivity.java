@@ -23,7 +23,6 @@ import com.mindsea.simpletodo.util.TodoListDatabase;
 public class MainActivity extends Activity {
     
     private SQLiteDatabase database;
-    private List<TodoItem> todoLists;
     private TodoArrayAdapter listAdapter;
     private ListView todoListView;
     
@@ -63,7 +62,7 @@ public class MainActivity extends Activity {
      * Reload the todo lists from the database and display them in the list.
      */
     private void updateTodoLists() {
-        todoLists = TodoItem.loadTodoItems(database);
+        final List<TodoItem> todoLists = TodoItem.loadTodoItems(database);
         
         listAdapter.clear();
         listAdapter.addAll(todoLists);
