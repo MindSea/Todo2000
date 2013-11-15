@@ -82,15 +82,13 @@ public class MainActivity extends Activity {
     private OnItemClickListener todoListViewItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (parent.equals(todoListView)) {
-                final TodoItem selectedTodo = listAdapter.getItem(position);
-                
-                selectedTodo.setCompleted(!selectedTodo.isCompleted());
-                
-                selectedTodo.commit(database);
-                
-                listAdapter.refresh();
-            }
+            final TodoItem selectedTodo = listAdapter.getItem(position);
+            
+            selectedTodo.setCompleted(!selectedTodo.isCompleted());
+            
+            selectedTodo.commit(database);
+            
+            listAdapter.refresh();
         }
     };
     
