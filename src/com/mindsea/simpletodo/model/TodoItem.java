@@ -53,6 +53,10 @@ public class TodoItem {
         this.text = text;
     }
 
+    public Long getRowId() {
+        return rowId;
+    }
+    
     public String getText() {
         return text;
     }

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -84,11 +85,8 @@ public class MainActivity extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             final TodoItem selectedTodo = listAdapter.getItem(position);
             
-            selectedTodo.setCompleted(!selectedTodo.isCompleted());
-            
-            selectedTodo.commit(database);
-            
-            listAdapter.refresh();
+            final Intent startIntent = TodoActivity.newStartIntent(MainActivity.this, selectedTodo.getRowId());
+            startActivity(startIntent);
         }
     };
     
