@@ -41,6 +41,8 @@
             android:gravity="center"
             android:padding="6dp"
             android:text="Added date" />
+        
+        <!-- In TodoActivity, we add a number of simple TextView child instances to this LinearLayout, but they don't exist when this layout is inflated. -->
     </LinearLayout>
 
 </ScrollView>
