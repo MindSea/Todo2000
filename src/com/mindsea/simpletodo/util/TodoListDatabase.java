@@ -7,9 +7,20 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.mindsea.simpletodo.TodoApplication;
+
 public class TodoListDatabase extends SQLiteOpenHelper {
+    private static TodoListDatabase INSTANCE = new TodoListDatabase(TodoApplication.getInstance().getApplicationContext());
     
-    TodoListDatabase(Context context) {
+    public static TodoListDatabase getShared() {
+        return INSTANCE;
+    }
+    
+    //
+    // Instance methods
+    //
+    
+    private TodoListDatabase(Context context) {
         super(context, "todolists.db", null, 1);
     }
     

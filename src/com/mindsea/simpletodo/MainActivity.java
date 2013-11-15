@@ -18,7 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.mindsea.simpletodo.model.TodoItem;
-import com.mindsea.simpletodo.util.DatabaseManager;
+import com.mindsea.simpletodo.util.TodoListDatabase;
 
 public class MainActivity extends Activity {
     
@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
         
         todoListView = (ListView)findViewById(R.id.list);
         
-        database = DatabaseManager.getSharedManager().getDatabase().getWritableDatabase();
+        database = TodoListDatabase.getShared().getWritableDatabase();
         listAdapter = new TodoArrayAdapter(this);
         todoListView.setAdapter(listAdapter);
         todoListView.setOnItemClickListener(todoListViewItemClickListener);

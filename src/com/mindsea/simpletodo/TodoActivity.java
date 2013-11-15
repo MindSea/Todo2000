@@ -21,7 +21,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.mindsea.simpletodo.model.TodoItem;
-import com.mindsea.simpletodo.util.DatabaseManager;
+import com.mindsea.simpletodo.util.TodoListDatabase;
 
 public class TodoActivity extends Activity {
     
@@ -60,7 +60,7 @@ public class TodoActivity extends Activity {
         setContentView(R.layout.activity_todo);
         
         // Load todo from database
-        database = DatabaseManager.getSharedManager().getDatabase().getWritableDatabase();
+        database = TodoListDatabase.getShared().getWritableDatabase();
         final Cursor todoListCursor = database.query("todolist", new String[] {"ROWID", "text", "updated_on", "added_on", "completed"}, "ROWID = ?", new String[] { Long.toString(getRowId()) }, null, null, null);
         selectedTodo = TodoItem.loadFromCursor(todoListCursor).get(0);
         
